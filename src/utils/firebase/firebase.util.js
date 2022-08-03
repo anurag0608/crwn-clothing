@@ -34,16 +34,18 @@ provider.setCustomParameters({
 
 export const auth = getAuth();
 export const signInWithGooglePopup = ()=> signInWithPopup(auth, provider);
+export const signInWithGoogleRedirect = ()=> signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
+
 export const createuserDocumentFromAuth = async (userAuth)=>{
     const userDocRef = doc(db, 'users', userAuth.uid);
-    console.log(userDocRef)
+    // console.log(userDocRef)
     /*
         create a document reference regardless to the document whether it exists or not
     */
    const userSnapshot = await getDoc(userDocRef);
-   console.log(userSnapshot.exists())
+//    console.log(userSnapshot.exists())
 
    /*
         if user data exists
