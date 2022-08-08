@@ -40,7 +40,13 @@ const SignUpForm = () => {
       // reset form fields
       resetFormFields();
     } catch (err) {
-      console.log("User creation error", err);
+      switch(err.code){
+            case 'auth/email-already-in-use':
+                alert('email already in use');
+                break;
+            default:
+                console.log(err);
+      }
     }
   };
   const resetFormFields = () => {
