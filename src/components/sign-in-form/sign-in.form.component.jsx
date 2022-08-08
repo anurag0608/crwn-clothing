@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 import { getRedirectResult } from 'firebase/auth';
 import {
   LocalSignInWithEmailAndPassword,
@@ -20,6 +22,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password} = formFields;
 
+  const {setCurrentUser} = useContext(UserContext);
 /*
     uncomment it if u want to use login with redirect
     useEffect(()=>{
@@ -34,6 +37,7 @@ const SignInForm = () => {
 */
   const logGoogleUser = async ()=>{
     const {user} = await signInWithGooglePopup();
+    setCurrentUser(user); // update the user context
     // console.log(response);
     const userDocRef = await createuserDocumentFromAuth(user);
     console.log(userDocRef)
@@ -57,7 +61,8 @@ const SignInForm = () => {
     const {email, password} = formFields;
     try {
       const response = await LocalSignInWithEmailAndPassword(email, password);
-      console.log(response)
+      const {user} = response;
+      setCurrentUser(user); // update the user context
       // reset form fields
       resetFormFields();
     } catch (err) {

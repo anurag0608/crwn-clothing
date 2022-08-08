@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 import {
   createAuthUserWithEmailAndPassword,
   createuserDocumentFromAuth,
@@ -16,6 +18,9 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+
+  const {setCurrentUser} = useContext(UserContext); // hook to user context change
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
@@ -32,11 +37,14 @@ const SignUpForm = () => {
         email,
         password
       ); // will create account in firebase and return user object
-      const { user } = response;
+      const { user } = response; // contains access tokens and other important details
+      
+      setCurrentUser(user);
+
       const userDocRef = await createuserDocumentFromAuth(user, {
         displayName,
       }); // will create user document using user object and displayName in firestore
-      console.log(userDocRef);
+      // console.log(userDocRef);
       // reset form fields
       resetFormFields();
     } catch (err) {

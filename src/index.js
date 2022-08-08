@@ -1,16 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom'; // router
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom"; // router
 
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from "./App";
+import { UserProvider } from "./contexts/user.context";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import reportWebVitals from "./reportWebVitals";
+import "./index.scss";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider>
+        {/* App can access contexts stored by user provider */}
+        <App />
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
