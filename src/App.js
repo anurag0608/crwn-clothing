@@ -6,7 +6,7 @@ import {Routes, Route} from 'react-router-dom';
 // IMPORT Routes //
 import Home from "./routes/home/home.component";
 import Navigation from './routes/navigation/navigation.component';
-import SignIn from './routes/signIn/sign-in.component';
+import Authentication from './routes/authentication/authentication.component';
 ///////////////////
 const Shop = ()=>{
   return <h1>I'm the shop 🛒</h1>
@@ -18,7 +18,7 @@ const App = ()=>{
       <Route index={true} element={<Home />}></Route> 
       {/* index here means if router matches '/'path then default component that should be render is Home*/}
       <Route path='shop' element={<Shop />}></Route>
-      <Route path='sign-in' element={<SignIn />}></Route>
+      <Route path='auth' element={<Authentication />}></Route>
     </Route>
   </Routes>
   )

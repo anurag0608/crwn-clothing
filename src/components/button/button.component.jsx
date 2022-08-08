@@ -3,16 +3,18 @@ import "./button.styles.scss";
 const BUTTON_TYPES_CLASSES = {
   google: "google-sign-in",
   inverted: "inverted",
-  '':'' // for default type
+  "": "", // for default type
 };
-const Button = ({ children, buttonType='', ...otherProps }) => {
+const Button = ({ children, buttonType = "", ...otherProps }) => {
   return (
-    <button
-      className={`button-container ${BUTTON_TYPES_CLASSES[buttonType]}`}
-      {...otherProps}
-    >
-      {children}
-    </button>
+    <div>
+      <button
+        className={`button-container ${BUTTON_TYPES_CLASSES[buttonType]}`}
+        {...otherProps}
+      >
+        {children}
+      </button>
+    </div>
   );
 };
 

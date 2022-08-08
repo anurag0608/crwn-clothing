@@ -3,6 +3,7 @@ import {
     getAuth,
     signInWithRedirect, 
     signInWithPopup,
+    signInWithEmailAndPassword,
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
 } 
@@ -78,4 +79,15 @@ export const createAuthUserWithEmailAndPassword = async (email, password)=>{
     }
     const authUser = await createUserWithEmailAndPassword(auth, email, password);
     return authUser;
+}
+
+export const LocalSignInWithEmailAndPassword = async (email, password)=>{
+    if(!email || !password){
+        return;
+    }
+    try{
+        return await signInWithEmailAndPassword(auth, email, password);
+    }catch(err){
+        throw err;
+    }
 }
