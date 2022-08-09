@@ -8,17 +8,10 @@ import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"; // u can im
 import "./navigation.styles.scss";
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  /*
-    we hooked the user context to Navigation componenet, which means
-    whenever the context changes or updated, the state changes (user context basically stores the state of a user), 
-    this Navigation componenet will re-render because it is hooked with that state.
-    So basically all the components which are hooked to this user context will re-render.
-  */
+  const { currentUser} = useContext(UserContext);
   const signOutHandler = async()=>{
       try{
         await SignOutUser(); 
-        // setCurrentUser(null); // destroy user context
       }catch(error){
         console.log(error)
       }
