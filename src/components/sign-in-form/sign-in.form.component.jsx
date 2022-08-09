@@ -22,7 +22,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password} = formFields;
 
-  const {setCurrentUser} = useContext(UserContext);
+  // const {setCurrentUser} = useContext(UserContext);
 /*
     uncomment it if u want to use login with redirect
     useEffect(()=>{
@@ -36,11 +36,14 @@ const SignInForm = () => {
     },[]); // on component mount/unmount
 */
   const logGoogleUser = async ()=>{
-    const {user} = await signInWithGooglePopup();
-    setCurrentUser(user); // update the user context
-    // console.log(response);
-    const userDocRef = await createuserDocumentFromAuth(user);
-    console.log(userDocRef)
+    await signInWithGooglePopup();
+    /*
+       const {user} = await signInWithGooglePopup();
+       setCurrentUser(user); // update the user context
+      //console.log(response);
+       const userDocRef = await createuserDocumentFromAuth(user);
+       console.log(userDocRef)
+    */
   }
 /*
     below method will not work as after being redirect all the components will unmount and we'll lost all the states
@@ -60,9 +63,11 @@ const SignInForm = () => {
     e.preventDefault();
     const {email, password} = formFields;
     try {
-      const response = await LocalSignInWithEmailAndPassword(email, password);
-      const {user} = response;
-      setCurrentUser(user); // update the user context
+      await LocalSignInWithEmailAndPassword(email, password);
+      /* const response = await LocalSignInWithEmailAndPassword(email, password);
+         const {user} = response;
+         setCurrentUser(user); // update the user context
+      */
       // reset form fields
       resetFormFields();
     } catch (err) {

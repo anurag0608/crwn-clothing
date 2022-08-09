@@ -1,6 +1,7 @@
 import {initializeApp} from 'firebase/app';
 import {
     getAuth,
+    onAuthStateChanged, // auth object change listner
     signInWithRedirect, 
     signInWithPopup,
     signInWithEmailAndPassword,
@@ -99,4 +100,7 @@ export const SignOutUser = async()=>{
     }catch(error){
         throw error;
     }
+}
+export const onAuthChangeListner = async(callback)=>{
+    onAuthStateChanged(auth, callback);
 }

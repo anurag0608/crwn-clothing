@@ -18,7 +18,7 @@ const Navigation = () => {
   const signOutHandler = async()=>{
       try{
         await SignOutUser(); 
-        setCurrentUser(null); // destroy user context
+        // setCurrentUser(null); // destroy user context
       }catch(error){
         console.log(error)
       }
