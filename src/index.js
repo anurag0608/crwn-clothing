@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom"; // router
 import App from "./App";
 import { UserProvider } from './contexts/user.context';
 import { ProductsProvider } from "./contexts/products.context";
+import { CartProvider } from "./contexts/cart.context";
 
 import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
@@ -16,7 +17,9 @@ root.render(
       <UserProvider>
         {/* App can access contexts stored by user provider */}
         <ProductsProvider>
-            <App />
+            <CartProvider>
+                <App />
+            </CartProvider>
         </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
