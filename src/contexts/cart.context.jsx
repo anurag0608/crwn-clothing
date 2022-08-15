@@ -1,9 +1,10 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const CartContext = createContext({
   isCartOpen: false,
   setIsCartOpen: ()=> null,
   cartItems: [],
+  setCartItems: ()=> null,
   totalQuantity: 0,
 });
 
@@ -20,10 +21,15 @@ export const CartProvider = ({ children }) => {
     }else{
       setCartItems([...cartItems, {...itemToAdd, quantity: 1}]);
     }
-    setTotalQuantity(totalQuantity + 1);
   }
+  useEffect(()=>{
+    let newCount = 0;
+    cartItems.forEach(cartItem=>newCount += cartItem.quantity);
+    setTotalQuantity(newCount);
+  },[cartItems]);
+
   const value = {
-    isCartOpen, setIsCartOpen, cartItems, addItemToCart, totalQuantity
+    isCartOpen, setIsCartOpen, cartItems, addItemToCart, totalQuantity, setCartItems
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
