@@ -6,39 +6,32 @@ import CheckoutItem from '../../components/checkout-item/checkout.item.component
 
 const Checkout = ()=>{
     // checkout is now hooked to CartContext
-    const {cartItems, setCartItems} = useContext(CartContext);
-    const totalPrice = cartItems.reduce((acc, cartItem)=>acc + cartItem.price * cartItem.quantity, 0);
-    const onClickDecrease = (e)=>{
-        const itemId = e.target.getAttribute('itemID')
-        const cartItem = cartItems.find((cartItem)=>cartItem.id===Number(itemId));
-        if(cartItem){
-            if(cartItem.quantity===1){
-                setCartItems(cartItems.filter((cartItem)=>cartItem.id!==Number(itemId)));
-            }else{
-                setCartItems(cartItems.map((cartItem)=>cartItem.id===Number(itemId) ? {...cartItem, quantity: cartItem.quantity-1} : cartItem));
-            }
-        }
-    }
-    const onClickIncrease = (e)=>{
-        const itemId = e.target.getAttribute('itemID')
-        const cartItem = cartItems.find((cartItem)=>cartItem.id===Number(itemId));
-        if(cartItem){
-            setCartItems(cartItems.map((cartItem)=>cartItem.id===Number(itemId) ? {...cartItem, quantity: cartItem.quantity+1} : cartItem));
-        }
-    }
-    const onClickRemove = (e)=>{
-        const itemId = e.target.getAttribute('itemID')
-        setCartItems(cartItems.filter((cartItem)=>cartItem.id!==Number(itemId)));
-    }
+    const {cartItems, totalPrice} = useContext(CartContext);
     return (
-        <div>
-            <h1>Hi Im checkout page 💰</h1>
+        <div className='checkout-container'>
+            <div className='checkout-header'>
+                <div className='header-block'>
+                    <span>Product</span>
+                </div>
+                <div className='header-block'>
+                    <span>Description</span>
+                </div>
+                <div className='header-block'>
+                    <span>Quantity</span>
+                </div>
+                <div className='header-block'>
+                    <span>Price</span>
+                </div>
+                <div className='header-block'>
+                    <span>Remove</span>
+                </div>
+            </div>
             {
                 cartItems.map((item)=>{
-                    return <CheckoutItem key={item.id} item={item} onClickIncrease={onClickIncrease} onClickDecrease={onClickDecrease} onClickRemove={onClickRemove}/>
+                    return <CheckoutItem key={item.id} cartItem={item}/>
                 })
             }
-            <h2>Final Price: {`${totalPrice} $`}</h2>
+            <span className='total'>Total: $ {`${totalPrice}`}</span>
         </div>
     )
 }
