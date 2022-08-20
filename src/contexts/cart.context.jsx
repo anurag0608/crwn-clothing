@@ -47,7 +47,8 @@ export const CartProvider = ({ children }) => {
 
   // for calculating the total price
   useEffect(()=>{
-    setTotalPrice(cartItems.reduce((acc, cartItem)=>acc + cartItem.price * cartItem.quantity, 0));
+    let newTotal = cartItems.reduce((acc, cartItem)=>acc + cartItem.price * cartItem.quantity, 0)
+    setTotalPrice(newTotal.toPrecision(4));
   },[cartItems]);
 
   const value = {

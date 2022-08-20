@@ -13,21 +13,34 @@ from 'firebase/auth';
 import {
     getFirestore, // for getting firestore instance
     doc, // for getting document instance
+    query,
     setDoc,    // C
     getDoc,    // R
+    getDocs,
     updateDoc, // U
     deleteDoc, // D
+    collection, // for getting collection instance
+    writeBatch, // for batch write
+    serverTimestamp, // for getting server timestamp
 } from 'firebase/firestore'
-const firebaseConfig = {
-    apiKey: "AIzaSyBqsgKnrpcFBxFz_UniKrAtzoo0iZBe-LY",
-    authDomain: "crwn-db-ded29.firebaseapp.com",
-    projectId: "crwn-db-ded29",
-    storageBucket: "crwn-db-ded29.appspot.com",
-    messagingSenderId: "786174952039",
-    appId: "1:786174952039:web:22ff501471c880614c0ac2",
-    measurementId: "G-5TT2212D58"
+// const firebaseConfig = {
+//     apiKey: "AIzaSyBqsgKnrpcFBxFz_UniKrAtzoo0iZBe-LY",
+//     authDomain: "crwn-db-ded29.firebaseapp.com",
+//     projectId: "crwn-db-ded29",
+//     storageBucket: "crwn-db-ded29.appspot.com",
+//     messagingSenderId: "786174952039",
+//     appId: "1:786174952039:web:22ff501471c880614c0ac2",
+//     measurementId: "G-5TT2212D58"
+//   };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBXD2amthMzpk4NQ-Ka9EgGllDTTzPnvWU",
+    authDomain: "crwn-clothing-b4587.firebaseapp.com",
+    projectId: "crwn-clothing-b4587",
+    storageBucket: "crwn-clothing-b4587.appspot.com",
+    messagingSenderId: "470283358488",
+    appId: "1:470283358488:web:3c40b1d01a20c21fdf4e6d",
+    measurementId: "G-Q5KGRHC859"
   };
-  
   // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -104,3 +117,39 @@ export const SignOutUser = async()=>{
 export const onAuthChangeListner = async(callback)=>{
     onAuthStateChanged(auth, callback);
 }
+// https://firebase.google.com/docs/firestore/manage-data/transactions?authuser=0#batched-writes
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd)=>{
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+    objectsToAdd.forEach(obj=>{
+        const newDocRef = doc(collectionRef);
+        batch.set(newDocRef, {
+            createdAt: serverTimestamp(),
+            ...obj
+        });
+    })
+    return await batch.commit();
+}
+export const getCollectionAndDocuments = async (collectionKey)=>{
+    const collectionRef = collection(db, collectionKey);
+    // build a query
+    const q = query(collectionRef);
+
+    const collectionSnapshot = await getDocs(q);
+    const collectionData = collectionSnapshot.docs.map(doc=>{
+        return {
+            id: doc.id, // this is the document id, not the collection id
+            ...doc.data()
+        }
+    });
+    return collectionData;
+}
+/**
+ * General firestore procedure for CRUD
+ * 1. Create a collection reference
+ * 2. CRUD
+ *    C -> setDocs(collectionRef)
+ *      -> And for creating in bulk use batch using write batch
+ *    R -> create a query(collectionRef) 
+ *      -> getDocs(query) the map over it. To get the doc data use doc.data()
+ */

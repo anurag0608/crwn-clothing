@@ -1,6 +1,5 @@
 $sub-color: grey;
 $main-color: black;
-
 @mixin shrinkLabel {
   top: -14px;
   font-size: 12px;
@@ -50,5 +49,18 @@ $main-color: black;
     &.shrink {
       @include shrinkLabel();
     }
+  }
+}
+.select{
+  select{
+    width: 100%;
+    height: 40px;
+    font-family: 'Abril Fatface';
+    font-size: 15px;
+    color: gray;
+    text-align: center;
+  }
+  select option:checked{
+    color: rgb(0, 0, 0);
   }
 }
