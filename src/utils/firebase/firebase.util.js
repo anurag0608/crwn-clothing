@@ -14,6 +14,7 @@ import {
     getFirestore, // for getting firestore instance
     doc, // for getting document instance
     query,
+    where,
     setDoc,    // C
     getDoc,    // R
     getDocs,
@@ -130,11 +131,14 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd)=>{
     })
     return await batch.commit();
 }
-export const getCollectionAndDocuments = async (collectionKey)=>{
+export const getCollectionAndDocuments = async (collectionKey,id=null)=>{
     const collectionRef = collection(db, collectionKey);
+    if(id){
+        const collectionSnapshot = await getDoc(doc(collectionRef, id));
+        return collectionSnapshot.data();
+    }
     // build a query
     const q = query(collectionRef);
-
     const collectionSnapshot = await getDocs(q);
     const collectionData = collectionSnapshot.docs.map(doc=>{
         return {
@@ -143,6 +147,11 @@ export const getCollectionAndDocuments = async (collectionKey)=>{
         }
     });
     return collectionData;
+}
+export const updateCollectionAndDocuments = async (collectionKey, id, data)=>{
+    const collectionRef = collection(db, collectionKey);
+    const docRef = doc(collectionRef, id);
+    return await updateDoc(docRef, data);
 }
 /**
  * General firestore procedure for CRUD

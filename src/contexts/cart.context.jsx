@@ -1,4 +1,7 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { UserContext } from "./user.context";
+
+import { updateCollectionAndDocuments } from "../utils/firebase/firebase.util";
 
 export const CartContext = createContext({
   isCartOpen: false,
@@ -12,10 +15,15 @@ export const CartContext = createContext({
 });
 
 export const CartProvider = ({ children }) => {
+  const { currentUser, currentUserCartItems } = useContext(UserContext);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+ 
+  useEffect(()=>{
+    setCartItems(currentUserCartItems);
+  },[currentUserCartItems])
 
   const addItemToCart = (itemToAdd)=>{
     // find cart item with the same id and increment the quantity
@@ -26,6 +34,14 @@ export const CartProvider = ({ children }) => {
       setCartItems([...cartItems, {...itemToAdd, quantity: 1}]);
     }
   }
+  useEffect(()=>{
+    (async()=>{
+      if(currentUser){
+        // update user document in firestore
+        await updateCollectionAndDocuments('users', currentUser.uid, {cartItems});
+      }
+    })();
+  },[cartItems])
   const removeItemFromCart = (itemToRemove)=>{
     // find cart item with the same id and decrement the quantity
     const existingCartItem = cartItems.find(cartItem=>cartItem.id === itemToRemove.id);
@@ -40,19 +56,19 @@ export const CartProvider = ({ children }) => {
   }
   // for calculating the total quantity
   useEffect(()=>{
-    let newCount = 0;
-    cartItems.forEach(cartItem=>newCount += cartItem.quantity);
-    setTotalQuantity(newCount);
+      let newCount = 0;
+      cartItems.forEach(cartItem=>newCount += cartItem.quantity);
+      setTotalQuantity(newCount);
   },[cartItems]);
 
   // for calculating the total price
   useEffect(()=>{
-    let newTotal = cartItems.reduce((acc, cartItem)=>acc + cartItem.price * cartItem.quantity, 0)
-    setTotalPrice(newTotal.toPrecision(4));
+      let newTotal = cartItems.reduce((acc, cartItem)=>acc + cartItem.price * cartItem.quantity, 0)
+      setTotalPrice(newTotal.toPrecision(4));
   },[cartItems]);
 
   const value = {
-    isCartOpen, setIsCartOpen, cartItems, addItemToCart, totalQuantity, removeItemFromCart, clearItemFromCart, totalPrice
+    isCartOpen, setIsCartOpen, cartItems, addItemToCart, totalQuantity, removeItemFromCart, clearItemFromCart, totalPrice, setCartItems
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

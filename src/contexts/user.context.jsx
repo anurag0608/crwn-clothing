@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react"
-import { onAuthChangeListner, createuserDocumentFromAuth } from "../utils/firebase/firebase.util";
+import { createContext, useState, useEffect} from "react"
+import { onAuthChangeListner, createuserDocumentFromAuth, getCollectionAndDocuments } from "../utils/firebase/firebase.util";
 /*
     React context allows us to pass down and use (consume) data in 
     whatever component we need in our React app without using props.
@@ -14,23 +14,35 @@ import { onAuthChangeListner, createuserDocumentFromAuth } from "../utils/fireba
 */
 export const UserContext = createContext({
     currentUser: null,
+    currentUserCartItems: [], // here we will store the cart items of the current user, since we cant access the cart context from here
+    setCurrentUserCartItems: ()=> null,
     setCurrentUser: () => null,
 })
 
 export const UserProvider = ({children})=>{
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
+
     const value = {
-        currentUser, setCurrentUser
+        currentUser, setCurrentUser, currentUserCartItems
     };
     useEffect(()=>{ // when component mounts/unmounts
         const unsubscribe = onAuthChangeListner((user)=>{
             if(user){
-                createuserDocumentFromAuth(user);
+                createuserDocumentFromAuth(user, {cartItems: []});
             }
             setCurrentUser(user);
         })
-        
+
     },[])
+    useEffect(()=>{
+        (async()=>{
+            if(currentUser){
+                const userDoc = await getCollectionAndDocuments('users', currentUser.uid);
+                setCurrentUserCartItems(userDoc.cartItems);
+            }
+        })();
+    },[currentUser])
     return (
         <UserContext.Provider value={value}>
             {children}

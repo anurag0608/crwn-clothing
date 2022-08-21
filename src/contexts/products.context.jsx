@@ -15,6 +15,7 @@ export const ProductsProvider = ({children})=>{
         (async()=>{
             // await addCollectionAndDocuments('products', SHOP_DATA); // for adding data to firestore
             const products = await getCollectionAndDocuments('products');
+            // const products = SHOP_DATA;
             const categories = products.reduce((acc, product) => {
                 if (!acc[product.category]) {
                 acc[product.category] = [];
@@ -22,7 +23,7 @@ export const ProductsProvider = ({children})=>{
                 acc[product.category].push(product);
                 return acc;
             },{});
-            console.log('products length', products.length);
+            // console.log('products length', products.length);
             setProducts(categories);
         })();
     },[])

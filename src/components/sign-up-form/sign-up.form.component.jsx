@@ -43,6 +43,7 @@ const SignUpForm = () => {
 
       const userDocRef = await createuserDocumentFromAuth(user, {
         displayName,
+        cartItems:[]
       }); // will create user document using user object and displayName in firestore
       // console.log(userDocRef);
       // reset form fields
