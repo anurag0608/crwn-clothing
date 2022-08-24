@@ -19,7 +19,7 @@ const App = ()=>{
     <Route path='/' element={<Navigation/>}>
       <Route index={true} element={<Home />}></Route> 
       {/* index here means if router matches '/'path then default component that should be render is Home*/}
-      <Route path='shop' element={<Shop />}></Route>
+      <Route path='shop/*' element={<Shop />}></Route>
       <Route path='shop/:categoryName' element={<CategoryPage />}></Route>
       <Route path='auth' element={<Authentication />}></Route>
       <Route path='checkout' element={<Checkout />}></Route>
