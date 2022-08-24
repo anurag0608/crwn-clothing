@@ -10,7 +10,6 @@ import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component';
 import CreateProduct from './routes/create-product/create.product.component';
-import CategoryPage from './routes/category-page/category.page.component';
 ///////////////////
 
 const App = ()=>{
@@ -20,7 +19,6 @@ const App = ()=>{
       <Route index={true} element={<Home />}></Route> 
       {/* index here means if router matches '/'path then default component that should be render is Home*/}
       <Route path='shop/*' element={<Shop />}></Route>
-      <Route path='shop/:categoryName' element={<CategoryPage />}></Route>
       <Route path='auth' element={<Authentication />}></Route>
       <Route path='checkout' element={<Checkout />}></Route>
       <Route path='create-product' element={<CreateProduct />}></Route>

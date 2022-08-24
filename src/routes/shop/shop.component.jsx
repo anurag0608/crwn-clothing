@@ -1,21 +1,15 @@
-import './shop.styles.scss';
-
-import { useContext, Fragment } from "react";
-import { ProductsContext } from "../../contexts/products.context";
-import CategoryPreview from '../../components/categories-preview/categories.preview.component';
+import { Routes, Route } from "react-router-dom";
+import CategoriesPreview from "../categories-preview/categories.preview.component";
+import CategoryPage from "../category-page/category.page.component";
 
 const Shop = (props) => {
-  const { products } = useContext(ProductsContext);
+  // now shop component has its own route
+  // all the routes comes under /shop
   return (
-    <Fragment>
-      {
-        Object.keys(products).map((category) => {
-          return (
-            <CategoryPreview key={category} category={category} products={products} previewCount={4}/>
-          )
-        })
-      }
-    </Fragment>
+    <Routes>
+      <Route index element={<CategoriesPreview/>}></Route> 
+      <Route path="/:categoryName" element={<CategoryPage />}></Route>
+    </Routes>
   );
 };
 export default Shop;
