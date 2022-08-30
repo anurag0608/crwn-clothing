@@ -1,5 +1,6 @@
+import {CategoryTitle, ProductsContainer, CategoryLink} from './category.page.styles';
 import { useEffect, useState } from 'react';
-import {useParams, Link} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import { useContext, Fragment} from 'react';
 import { ProductsContext } from '../../contexts/products.context';
 import ProductCard from '../../components/product-card/product.card.component';
@@ -23,16 +24,16 @@ const CategoryPage = (props)=>{
     }
     return (
       <Fragment>
-        <div className='category-title'>
-                <Link to='#'>{categoryName.toUpperCase()}</Link>
-        </div>
-        <div className="products-container">
+        <CategoryTitle>
+                <CategoryLink to='#'>{categoryName.toUpperCase()}</CategoryLink>
+        </CategoryTitle>
+        <ProductsContainer>
         {
           categoryProducts.map((product) => {
             return <ProductCard key={product.id} product={product} />;
           })
         }
-       </div>
+       </ProductsContainer>
       </Fragment>
     )
 }

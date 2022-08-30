@@ -1,4 +1,6 @@
 import { useState, useContext } from "react";
+
+import { Container } from "./create.product.styles";
 import { ProductsContext } from "../../contexts/products.context";
 
 import FormInput from "../../components/form-input/form-input.component";
@@ -32,7 +34,7 @@ const CreateProduct = () => {
         setFormFields(defaultFormFields);
  }
   return (
-    <div className="sign-up-container">
+    <Container>
       <h2>Create a NEW Product!</h2>
       <form onSubmit={handleSubmit}>
         {/* Drop down menu */}
@@ -70,7 +72,7 @@ const CreateProduct = () => {
         />
         <Button type='submit'>Create ✨</Button>
       </form>
-    </div>
+    </Container>
   )
 };
 export default CreateProduct;

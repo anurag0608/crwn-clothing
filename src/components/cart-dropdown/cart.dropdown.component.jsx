@@ -1,4 +1,4 @@
-import "./cart.dropdown.styles.scss";
+import {CartDropdownContainer, CartItems, Child} from "./cart.dropdown.styles.jsx";
 
 import { useContext } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -17,16 +17,16 @@ const CartDropDown = () => {
     navigate('/checkout');
   }
   return (
-    <div className="cart-dropdown-container">
-      <div className="cart-items">
-        <div className="child">
+    <CartDropdownContainer>
+      <CartItems>
+        <Child>
           {cartItems.map((cartItem) => {
             return <CartItem key={cartItem.id} cartItem={cartItem} />;
           })}
-        </div>
-      </div>
+        </Child>
+      </CartItems>
       <Button onClick={onClick}>Go to Checkout</Button>
-    </div>
+    </CartDropdownContainer>
   );
 };
 

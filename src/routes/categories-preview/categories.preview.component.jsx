@@ -1,5 +1,3 @@
-import './categories.preview.scss';
-
 import { Fragment, useContext } from "react";
 import { ProductsContext } from "../../contexts/products.context";
 

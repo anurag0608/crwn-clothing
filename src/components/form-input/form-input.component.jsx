@@ -1,15 +1,15 @@
 import { Fragment } from 'react';
-import './form-input.styles.scss';
+import {Input, InputLabel, Group, Select} from  './form-input.styles.jsx';
 
 const FormInput = ({select, label, ...otherInputDetails }) => {
   return (
-    <div className="group">
+    <Group>
      {
-      !select && (<input className="form-input" {...otherInputDetails} />)
+      !select && (<Input {...otherInputDetails} />)
      }
       { select && (
               <Fragment>
-                <div className='select'>
+                <Select>
                   <select name={`${otherInputDetails['name']}`} {...otherInputDetails}>
                     { 
                       <Fragment>
@@ -20,15 +20,15 @@ const FormInput = ({select, label, ...otherInputDetails }) => {
                       </Fragment>
                     }
                   </select>
-                </div>
+                </Select>
               </Fragment>
       )}
       { label && ( // if label exists
-        <label className={`${otherInputDetails["value"].length ? "shrink" : ""} form-input-label`}>
+        <InputLabel shrink={otherInputDetails['value'].length}>
           {label}
-        </label>
+        </InputLabel>
         )}
-    </div>
+    </Group>
   );
 };
 export default FormInput;
