@@ -1,5 +1,8 @@
 import { useState, useContext } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/user.context";
+
 import { Container } from "./create.product.styles";
 import { ProductsContext } from "../../contexts/products.context";
 
@@ -16,8 +19,10 @@ const defaultFormFields = {
 }
 const CreateProduct = () => {
  const [formFields, setFormFields] = useState(defaultFormFields);
+ const {currentUser} = useContext(UserContext);
  const { category, name, price, imageUrl } = formFields;
  const {products} = useContext(ProductsContext);
+ const navigate = useNavigate();
  const availableCategories = Object.keys(products);
  const handleChange = (e)=>{
         const {name, value} = e.target;
@@ -32,6 +37,18 @@ const CreateProduct = () => {
  }
  const resetFormFields = ()=>{
         setFormFields(defaultFormFields);
+ }
+ const redirectToAuth = ()=>{
+    setTimeout(()=>{
+      navigate('/auth')
+    },3000)
+ }
+ if(!currentUser){
+  redirectToAuth(); // will excute after 3secs
+  return <div>
+    <h2>You are not signed in!</h2>
+    <p>Redirecting to Login page 🔑</p>
+  </div>
  }
   return (
     <Container>
